@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DriveSync - Funkciók Közelről</title>
+    <link rel="icon" type="image/png" href="logo.png">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;500;700;900&family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --accent: #f1c40f;
+            --accent-glow: rgba(241, 196, 15, 0.6);
+            --dark-bg: #0f1016;
+            --text: #ffffff;
+            --gradient: linear-gradient(135deg, #f1c40f 0%, #ff9f43 100%);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text);
+            overflow-x: hidden;
+            background-image: radial-gradient(#1a1c29 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+
+        /* VISSZA GOMB */
+        .back-btn {
+            position: absolute; top: 30px; left: 30px;
+            text-decoration: none; color: #fff; font-weight: 700;
+            display: flex; align-items: center; gap: 10px;
+            padding: 10px 20px; border-radius: 30px;
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+            transition: 0.3s; z-index: 100;
+        }
+        .back-btn:hover { background: var(--accent); color: #000; border-color: var(--accent); }
+
+        /* --- INTERAKTÍV SHOWROOM --- */
+        .showroom {
+            min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding: 80px 20px; text-align: center;
+        }
+        .showroom h1 { font-family: 'Exo 2'; font-size: 3rem; margin-bottom: 10px; }
+        .showroom p { color: #aaa; margin-bottom: 50px; max-width: 600px; }
+
+        /* A KÉP TARTÓJA */
+        .hotspot-container {
+            position: relative; max-width: 1000px; width: 100%;
+            border-radius: 20px; overflow: hidden;
+            box-shadow: 0 0 100px rgba(241, 196, 15, 0.15);
+            border: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 50px; /* Távolság a képek között */
+        }
+        .hotspot-container img { width: 100%; display: block; opacity: 0.8; transition: 0.5s; }
+        .hotspot-container:hover img { opacity: 1; transform: scale(1.02); }
+
+        /* A PULZÁLÓ PÖTTYÖK */
+        .hotspot {
+            position: absolute; width: 25px; height: 25px;
+            background: var(--accent); border-radius: 50%;
+            cursor: pointer; z-index: 10;
+            box-shadow: 0 0 0 0 rgba(241, 196, 15, 0.7);
+            animation: pulse-hotspot 2s infinite;
+            display: flex; justify-content: center; align-items: center;
+            font-weight: bold; color: #000; font-size: 12px;
+        }
+        .hotspot:hover { transform: scale(1.2); animation: none; }
+
+        @keyframes pulse-hotspot {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(241, 196, 15, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 15px rgba(241, 196, 15, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(241, 196, 15, 0); }
+        }
+
+        /* A FELUGRÓ BUBORÉKOK (TOOLTIPS) */
+        .tooltip {
+            position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+            width: 280px; background: rgba(15, 16, 22, 0.95);
+            padding: 20px; border-radius: 15px; border: 1px solid var(--accent);
+            color: #fff; text-align: left; font-size: 0.95rem; line-height: 1.5;
+            opacity: 0; visibility: hidden; transition: 0.3s; pointer-events: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 20;
+        }
+        .tooltip h4 { color: var(--accent); margin-bottom: 8px; font-family: 'Exo 2'; text-transform: uppercase; letter-spacing: 1px; }
+        
+        /* Ha ráviszed az egeret a pöttyre, megjelenik a buborék */
+        .hotspot:hover .tooltip { opacity: 1; visibility: visible; bottom: 50px; }
+
+    </style>
+</head>
+<body>
+
+    <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Főoldal</a>
+
+    <section class="showroom">
+        <div data-aos="fade-down">
+            <h1>Interaktív <span style="color: var(--accent);">Bemutató</span></h1>
+            <p>Vidd az egeret a sárga pontok fölé, hogy felfedezd a rendszer mélységeit!</p>
+        </div>
+
+        <div class="hotspot-container" data-aos="zoom-in" data-aos-delay="100">
+            <img src="bemutat1.png" alt="DriveSync Dashboard">
+
+            <div class="hotspot" style="top: 50%; left: 16%;">
+                <i class="fas fa-bars"></i>
+                <div class="tooltip">
+                    <h4>Intuitív Vezérlőpult</h4>
+                    Modern oldalsáv a gyors navigációért. Minden modul (autók, költségek, beállítások) egyetlen kattintással elérhető.
+                </div>
+            </div>
+
+            <div class="hotspot" style="top: 40%; left: 40%;">
+                <i class="fas fa-cloud-sun"></i>
+                <div class="tooltip">
+                    <h4>Valós Idejű Időjárás</h4>
+                    Integrált meteorológiai modul. Tudd meg azonnal, milyen útviszonyokra számíts indulás előtt a tartózkodási helyeden.
+                </div>
+            </div>
+
+            <div class="hotspot" style="bottom: 20%; right: 20%;">
+                <i class="fas fa-gas-pump"></i>
+                <div class="tooltip">
+                    <h4>Élő Üzemanyagárak</h4>
+                    Automatikus adatlekérés a hazai átlagárakról minden indításkor. Tervezz tudatosan a legfrissebb piaci adatokkal.
+                </div>
+            </div>
+        </div>
+
+        <div class="hotspot-container" data-aos="zoom-in" data-aos-delay="200">
+            <img src="bemutat2.png" alt="DriveSync Flotta">
+
+            <div class="hotspot" style="top: 45%; left: 40%;">
+                <i class="fas fa-car"></i>
+                <div class="tooltip">
+                    <h4>Digitális Garázs</h4>
+                    Kezeld a teljes flottádot egy helyen. Részletes adatlapok: műszaki adatok, biztosítási évfordulók és szerviztörténet.
+                </div>
+            </div>
+
+            <div class="hotspot" style="top: 45%; right: 15%;">
+                <i class="fa fa-chart-pie" aria-hidden="true"></i>
+                <div class="tooltip">
+                    <h4>Pénzügyi Elemzés</h4>
+                    Átlátható grafikonok a kiadásokról. Kövesd nyomon a tankolást és a szervizköltségeket fillérre pontosan, havi bontásban.
+                </div>
+            </div>
+        </div>
+
+        <div class="hotspot-container" data-aos="zoom-in" data-aos-delay="300">
+            <img src="bemutat3.png" alt="DriveSync Eszközök">
+
+            <div class="hotspot" style="top: 50%; left: 40%;">
+                <i class="fas fa-robot"></i>
+                <div class="tooltip">
+                    <h4>AI Diagnosztika</h4>
+                    Mesterséges intelligenciával támogatott hibaelemzés. Írd le a tüneteket, és az AI azonnal javaslatot tesz a lehetséges problémára.
+                </div>
+            </div>
+
+            <div class="hotspot" style="top: 70%; right: 60%;">
+                <i class="fa fa-globe" aria-hidden="true"></i>
+                <div class="tooltip">
+                    <h4>Hasznos Források</h4>
+                    Kurált linkgyűjtemény a legfontosabb autós portálokhoz, alkatrész-keresőkhöz és hivatalos ügyintézési felületekhez.
+                </div>
+            </div>
+
+            <div class="hotspot" style="top: 70%; right: 30%;">
+                <i class="fa fa-bell" aria-hidden="true"></i>
+                <div class="tooltip">
+                    <h4>Okos Értesítések</h4>
+                    Soha ne felejtsd el a határidőket. A rendszer automatikusan figyelmeztet a közelgő műszaki vizsgára vagy olajcserére.
+                </div>
+            </div>
+        </div>
+
+        <div style="margin-top: 50px;">
+            <a href="index.html#download" class="back-btn" style="position: static; display: inline-flex; background: var(--accent); color: #000;">
+                Meggyőzött! Letöltés <i class="fas fa-download" style="margin-left: 10px;"></i>
+            </a>
+        </div>
+    </section>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script> AOS.init(); </script>
+</body>
+</html>
