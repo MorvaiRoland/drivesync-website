@@ -754,11 +754,52 @@
         </div>
     </section>
 
-    <section id="download">
+   <section id="download">
         <div class="download-card" data-aos="zoom-in">
-        <div class="version-tag" id="versionBadge" onclick="openModal()" style="cursor: pointer; display: inline-flex; align-items: center; gap: 5px;">
-    <i class="fas fa-info-circle"></i> Betöltés...
-</div>
+            
+            <div class="version-tag" id="versionBadge" onclick="openModal()" style="cursor: pointer; display: inline-flex; align-items: center; gap: 5px;">
+                <i class="fas fa-info-circle"></i> Betöltés...
+            </div>
+
+            <h2>Készen állsz a rendszerezésre?</h2>
+            <p>Csatlakozz azokhoz, akik már digitálisan kezelik az autós ügyeiket.</p>
+
+            <div class="meta-info">
+                <div><i class="fab fa-windows"></i> <span>Platform</span> <div class="meta-value">Windows</div></div>
+                <div><i class="fas fa-box-open"></i> <span>Típus</span> <div class="meta-value">Portable</div></div>
+                <div><i class="fas fa-hdd"></i> <span>Méret</span> <div class="meta-value" id="downloadSize">--- MB</div></div>
+            </div>
+
+            <a href="#" class="btn-main" style="justify-content: center; margin: 0 auto; width: fit-content;" id="downloadBtn">
+                <i class="fas fa-download"></i> Letöltés Indítása
+            </a>
+            
+            <p style="margin-top: 20px; font-size: 0.8rem; color: #666;">Nem igényel telepítést. Csak csomagold ki és indítsd!</p>
+
+            <div style="margin-top: 30px; display: flex; justify-content: center; gap: 20px; opacity: 0.8; flex-wrap: wrap;">
+                <span title="Nyílt forráskód" style="font-size: 0.85rem; color: #aaa; display: flex; align-items: center; gap: 6px;">
+                    <i class="fas fa-code-branch" style="color: var(--accent);"></i> Open Source
+                </span>
+                <span title="Vírusmentes" style="font-size: 0.85rem; color: #aaa; display: flex; align-items: center; gap: 6px;">
+                    <i class="fas fa-shield-alt" style="color: var(--accent);"></i> Biztonságos
+                </span>
+                <span title="Ingyenes" style="font-size: 0.85rem; color: #aaa; display: flex; align-items: center; gap: 6px;">
+                    <i class="fas fa-tag" style="color: var(--accent);"></i> 100% Ingyenes
+                </span>
+            </div>
+
+        </div>
+
+        <div id="releaseModal" class="modal">
+            <div class="modal-content">
+                <span class="close-modal" onclick="closeModal()">&times;</span>
+                <h2 style="color: var(--accent); margin-bottom: 10px; font-family: 'Exo 2';">Újdonságok a verzióban</h2>
+                <div id="releaseNotes" style="color: #ccc; text-align: left; line-height: 1.6; white-space: pre-line; max-height: 300px; overflow-y: auto;">
+                    Betöltés...
+                </div>
+            </div>
+        </div>
+    </section>
 
 <div id="releaseModal" class="modal">
     <div class="modal-content">
