@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DriveSync - Dokumentáció</title>
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;500;700;900&family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root { --accent: #f1c40f; --dark-bg: #0f1016; --text: #fff; --sidebar-width: 280px; }
+        
+        body { font-family: 'Montserrat', sans-serif; background: var(--dark-bg); color: var(--text); margin: 0; display: flex; }
+        
+        /* Oldalsáv */
+        .sidebar {
+            width: var(--sidebar-width); height: 100vh; background: rgba(20,20,30,0.5);
+            border-right: 1px solid rgba(255,255,255,0.1); position: fixed; padding: 30px;
+            overflow-y: auto;
+        }
+        .docs-logo { font-family: 'Exo 2'; font-size: 1.5rem; font-weight: 900; margin-bottom: 40px; display: block; color: #fff; text-decoration: none; }
+        .docs-logo span { color: var(--accent); }
+        
+        .menu-item { display: block; color: #aaa; text-decoration: none; padding: 10px 0; transition: 0.3s; font-size: 0.95rem; }
+        .menu-item:hover, .menu-item.active { color: var(--accent); padding-left: 10px; }
+        .menu-title { color: #fff; font-weight: 700; margin: 25px 0 10px; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; opacity: 0.6; }
+
+        /* Tartalom */
+        .content { margin-left: var(--sidebar-width); padding: 60px 80px; max-width: 1000px; width: 100%; }
+        h1 { font-family: 'Exo 2'; font-size: 3rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 20px; }
+        h2 { color: var(--accent); margin-top: 40px; }
+        p { color: #ccc; line-height: 1.8; }
+        
+        /* Kód doboz */
+        .code-block {
+            background: #000; padding: 20px; border-radius: 10px; font-family: monospace;
+            border: 1px solid rgba(255,255,255,0.1); color: #2ecc71; margin: 20px 0;
+        }
+        .note { background: rgba(241, 196, 15, 0.1); border-left: 4px solid var(--accent); padding: 20px; margin: 20px 0; border-radius: 5px; }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <a href="index.html" class="docs-logo">Drive<span>Sync</span> Docs</a>
+        
+        <div class="menu-title">Kezdetek</div>
+        <a href="#install" class="menu-item active">Telepítés</a>
+        <a href="#login" class="menu-item">Bejelentkezés</a>
+        
+        <div class="menu-title">Használat</div>
+        <a href="#cars" class="menu-item">Autók hozzáadása</a>
+        <a href="#costs" class="menu-item">Költségek</a>
+        
+        <div class="menu-title">Hibaelhárítás</div>
+        <a href="#faq" class="menu-item">Gyakori hibák</a>
+        <a href="index.html" class="menu-item" style="margin-top: 30px; color: var(--accent);"><i class="fas fa-arrow-left"></i> Vissza a Főoldalra</a>
+    </div>
+
+    <div class="content">
+        <h1 id="install">Telepítési Útmutató</h1>
+        <p>Üdvözöl a DriveSync hivatalos dokumentációjában. Itt minden információt megtalálsz a szoftver használatáról.</p>
+        
+        <div class="note">
+            <strong>Tipp:</strong> A program futtatásához nem szükséges előre telepített Java, mivel a DriveSync tartalmazza a saját futtatókörnyezetét.
+        </div>
+
+        <h2>1. Letöltés és Kicsomagolás</h2>
+        <p>Töltsd le a legfrissebb <code>DriveSync.zip</code> fájlt a főoldalról. A Windows beépített csomagolójával vagy WinRAR-ral csomagold ki egy tetszőleges mappába.</p>
+
+        <h2>2. Indítás</h2>
+        <p>Keresd meg a mappában a futtatható fájlt:</p>
+        <div class="code-block">DriveSync.exe</div>
+        <p>Kattints rá duplán. Az első indításnál a Windows SmartScreen rákérdezhet a futtatásra, válaszd a "További információ" -> "Futtatás mindenképp" opciót.</p>
+
+        <h2 id="login">Bejelentkezés</h2>
+        <p>Használhatsz hagyományos email/jelszó párost, vagy a kényelmesebb <strong>Google Login</strong> gombot. Utóbbi esetben az adataid automatikusan szinkronizálódnak a felhőfiókoddal.</p>
+    </div>
+
+</body>
+</html>
