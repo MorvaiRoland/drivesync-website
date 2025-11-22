@@ -13,16 +13,16 @@
     <meta property="og:image" content="https://MorvaiRoland.github.io/drivesync-website/preview.png">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;500;700;900&family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
     
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;500;700;900&family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
     <style>
         :root {
-            --accent: #f1c40f; /* Sportos sárga */
-            --accent-glow: rgba(241, 196, 15, 0.5);
+            --accent: #f1c40f;
+            --accent-glow: rgba(241, 196, 15, 0.6);
             --dark-bg: #0f1016;
-            --panel-bg: rgba(22, 23, 34, 0.7);
             --text: #ffffff;
             --text-muted: #aab2bd;
             --gradient: linear-gradient(135deg, #f1c40f 0%, #ff9f43 100%);
@@ -37,58 +37,83 @@
             color: var(--text);
             line-height: 1.6;
             overflow-x: hidden;
-            /* Finom háttér mintázat (Carbon fiber hatás) */
             background-image: radial-gradient(#1a1c29 1px, transparent 1px);
             background-size: 30px 30px;
         }
 
-        /* --- SCROLLBAR --- */
+        /* --- PRELOADER --- */
+        #preloader {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--dark-bg); z-index: 9999;
+            display: flex; justify-content: center; align-items: center;
+            transition: opacity 0.5s ease-out, visibility 0.5s;
+        }
+        .spinner {
+            width: 60px; height: 60px; border: 5px solid rgba(255,255,255,0.1);
+            border-top: 5px solid var(--accent); border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* --- SCROLL PROGRESS BAR --- */
+        #progress-bar {
+            position: fixed; top: 0; left: 0; width: 0%; height: 3px;
+            background: var(--gradient); z-index: 1001; box-shadow: 0 0 10px var(--accent);
+        }
+
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: var(--dark-bg); }
         ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
 
-        /* --- PARTICLES --- */
-        #particles-js {
-            position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: -1;
+        #particles-js { position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: -1; }
+
+        .parallax-icon {
+            position: absolute; color: rgba(255, 255, 255, 0.03); font-size: 8rem; z-index: -1;
+            filter: blur(2px); pointer-events: none;
         }
 
-        /* --- LEBEGŐ NAVIGÁCIÓ --- */
+        /* --- GLITCH EFFECT --- */
+        .glitch-wrapper { display: inline-block; position: relative; }
+        .glitch {
+            color: var(--text); font-family: 'Exo 2', sans-serif; font-weight: 900;
+            position: relative; width: 100%; display: inline-block;
+        }
+        .glitch::before, .glitch::after {
+            content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--dark-bg);
+        }
+        .glitch::before {
+            left: 2px; text-shadow: -2px 0 #ff00c1; clip: rect(44px, 450px, 56px, 0);
+            animation: glitch-anim 5s infinite linear alternate-reverse;
+        }
+        .glitch::after {
+            left: -2px; text-shadow: -2px 0 #00fff9; clip: rect(44px, 450px, 56px, 0);
+            animation: glitch-anim-2 5s infinite linear alternate-reverse;
+        }
+        @keyframes glitch-anim { 0% { clip: rect(30px, 9999px, 10px, 0); } 100% { clip: rect(30px, 9999px, 10px, 0); } }
+        @keyframes glitch-anim-2 { 0% { clip: rect(10px, 9999px, 80px, 0); } 100% { clip: rect(10px, 9999px, 80px, 0); } }
+
+        /* --- NAVIGÁCIÓ --- */
         nav {
             display: flex; justify-content: space-between; align-items: center;
             width: 90%; max-width: 1200px; margin: 20px auto; padding: 15px 30px;
-            background: rgba(20, 20, 30, 0.85);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 50px;
+            background: rgba(20, 20, 30, 0.85); backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.08); border-radius: 50px;
             position: sticky; top: 20px; z-index: 1000;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); transition: all 0.3s ease;
         }
-
-        .logo { 
-            font-family: 'Exo 2', sans-serif; font-size: 1.5rem; font-weight: 900; 
-            color: #fff; display: flex; align-items: center; gap: 10px; letter-spacing: 1px;
-            text-transform: uppercase;
-        }
+        .logo { font-family: 'Exo 2', sans-serif; font-size: 1.5rem; font-weight: 900; color: #fff; display: flex; align-items: center; gap: 10px; letter-spacing: 1px; text-transform: uppercase; }
         .logo i { color: var(--accent); text-shadow: 0 0 15px var(--accent-glow); }
-
         .nav-links { display: flex; gap: 30px; align-items: center; }
-        .nav-links a { 
-            text-decoration: none; color: var(--text-muted); font-weight: 600; font-size: 0.9rem; 
-            transition: all 0.3s; position: relative; text-transform: uppercase; letter-spacing: 0.5px;
-        }
+        .nav-links a { text-decoration: none; color: var(--text-muted); font-weight: 600; font-size: 0.9rem; transition: all 0.3s; position: relative; text-transform: uppercase; letter-spacing: 0.5px; }
         .nav-links a:hover { color: #fff; }
         .nav-links a::after {
             content: ''; position: absolute; width: 0; height: 2px; bottom: -5px; left: 0;
             background: var(--accent); transition: width 0.3s; box-shadow: 0 0 10px var(--accent);
         }
         .nav-links a:hover::after { width: 100%; }
-
-        /* Külön stílus a Hibabejelentésnek */
         .bug-btn { color: #ff4757 !important; display: flex; align-items: center; gap: 5px; }
         .bug-btn:hover { text-shadow: 0 0 10px rgba(255, 71, 87, 0.5); }
-
         .btn-download-nav {
             background: var(--gradient); color: #000; padding: 10px 25px; border-radius: 30px;
             font-weight: 800; text-transform: uppercase; letter-spacing: 1px; font-size: 0.85rem;
@@ -96,45 +121,28 @@
         }
         .btn-download-nav:hover { transform: scale(1.05); box-shadow: 0 5px 30px rgba(241, 196, 15, 0.5); color: #000; }
 
-        /* --- HERO SZEKCIÓ --- */
-        .hero {
-            text-align: center; padding: 100px 20px 60px; min-height: 80vh;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-        }
-
+        /* --- HERO --- */
+        .hero { text-align: center; padding: 100px 20px 60px; min-height: 80vh; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; }
         .hero h1 {
-            font-family: 'Exo 2', sans-serif; font-size: 4.5rem; line-height: 1.1; margin-bottom: 20px;
-            font-weight: 900; text-transform: uppercase; letter-spacing: -2px;
-            background: linear-gradient(to bottom, #fff, #aaa); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 30px rgba(255,255,255,0.1));
+            font-family: 'Exo 2', sans-serif; font-size: 4rem; line-height: 1.1; margin-bottom: 20px;
+            font-weight: 900; text-transform: uppercase; letter-spacing: -2px; color: #fff;
         }
-
-        .typed-text { color: var(--accent); -webkit-text-fill-color: var(--accent); text-shadow: 0 0 20px var(--accent-glow); }
-
-        .hero p {
-            font-size: 1.2rem; color: var(--text-muted); max-width: 600px; margin-bottom: 50px;
-            font-weight: 400; letter-spacing: 0.5px;
-        }
-
+        .typed-text { color: var(--accent); text-shadow: 0 0 20px var(--accent-glow); }
+        .hero p { font-size: 1.2rem; color: var(--text-muted); max-width: 600px; margin-bottom: 50px; font-weight: 400; }
         .hero-buttons { display: flex; gap: 20px; margin-bottom: 80px; justify-content: center; }
-
+        
         .btn-main {
             padding: 18px 50px; border-radius: 50px; font-weight: 800; font-family: 'Exo 2', sans-serif;
             text-transform: uppercase; letter-spacing: 2px; border: none; cursor: pointer;
             display: flex; align-items: center; gap: 15px; font-size: 1rem; transition: all 0.3s;
-            background: var(--gradient); color: #121212;
-            box-shadow: 0 0 40px rgba(241, 196, 15, 0.4);
+            background: var(--gradient); color: #121212; box-shadow: 0 0 40px rgba(241, 196, 15, 0.4);
             animation: pulse-glow 3s infinite;
         }
-        
         @keyframes pulse-glow {
-            0% { box-shadow: 0 0 0 0 rgba(241, 196, 15, 0.7); }
-            70% { box-shadow: 0 0 0 20px rgba(241, 196, 15, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(241, 196, 15, 0); }
+            0% { box-shadow: 0 0 0 0 rgba(241, 196, 15, 0.7); } 70% { box-shadow: 0 0 0 20px rgba(241, 196, 15, 0); } 100% { box-shadow: 0 0 0 0 rgba(241, 196, 15, 0); }
         }
-
         .btn-main:hover { transform: translateY(-5px) scale(1.02); filter: brightness(1.2); }
-
+        
         .btn-glass {
             padding: 18px 40px; border-radius: 50px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
             background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff;
@@ -142,137 +150,139 @@
         }
         .btn-glass:hover { background: rgba(255,255,255,0.1); border-color: var(--accent); color: var(--accent); }
 
-        /* --- 3D SHOWCASE --- */
-        .hero-showcase {
-            perspective: 2000px; width: 100%; max-width: 1400px; display: flex; justify-content: center; gap: 30px;
-            padding: 0 20px;
-        }
+        .hero-showcase { perspective: 2000px; width: 100%; max-width: 1400px; display: flex; justify-content: center; gap: 30px; padding: 0 20px; }
         .screenshot-wrapper {
             width: 45%; border-radius: 20px; overflow: hidden;
             box-shadow: 0 50px 100px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.1);
-            transform-style: preserve-3d; transition: transform 0.1s;
-            background: #000;
+            transform-style: preserve-3d; transition: transform 0.1s; background: #000;
         }
         .screenshot-wrapper img { width: 100%; display: block; opacity: 0.9; transition: opacity 0.3s; }
         .screenshot-wrapper:hover img { opacity: 1; }
 
         /* --- SECTIONS --- */
         section { position: relative; z-index: 1; padding: 120px 20px; }
-        
         .section-header { text-align: center; margin-bottom: 80px; }
-        .section-header h2 {
-            font-family: 'Exo 2', sans-serif; font-size: 3rem; font-weight: 800; text-transform: uppercase;
-            margin-bottom: 15px; letter-spacing: -1px;
-        }
+        .section-header h2 { font-family: 'Exo 2', sans-serif; font-size: 3rem; font-weight: 800; text-transform: uppercase; margin-bottom: 15px; }
         .section-header span { color: var(--accent); text-shadow: 0 0 20px var(--accent-glow); }
         .section-header p { color: var(--text-muted); max-width: 500px; margin: 0 auto; }
 
-        /* --- FEATURE CARDS (DASHBOARD STYLE) --- */
-        .grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; max-width: 1200px; margin: 0 auto;
+        /* --- TECH STACK --- */
+        .tech-grid { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; }
+        .tech-card {
+            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05);
+            padding: 30px; border-radius: 20px; width: 180px; text-align: center;
+            transition: all 0.3s ease; backdrop-filter: blur(5px);
         }
+        .tech-card:hover { transform: translateY(-10px); background: rgba(255,255,255,0.07); border-color: var(--accent); }
+        .tech-icon { font-size: 4rem; margin-bottom: 15px; color: #fff; transition: color 0.3s; }
+        .tech-card:hover .tech-icon { color: var(--accent); filter: drop-shadow(0 0 15px var(--accent-glow)); }
+        .tech-name { font-weight: 700; font-family: 'Exo 2', sans-serif; letter-spacing: 1px; color: var(--text-muted); }
+
+        /* --- ROADMAP (ÚJ: FEJLESZTÉSI TERV) --- */
+        .roadmap-container {
+            max-width: 800px; margin: 0 auto; position: relative;
+        }
+        .roadmap-container::before {
+            content: ''; position: absolute; left: 50%; width: 2px; height: 100%;
+            background: rgba(255,255,255,0.1); transform: translateX(-50%);
+        }
+        .roadmap-item {
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 50px; position: relative;
+        }
+        .roadmap-dot {
+            position: absolute; left: 50%; width: 20px; height: 20px; background: var(--dark-bg);
+            border: 2px solid var(--accent); border-radius: 50%; transform: translateX(-50%); z-index: 2;
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+        .roadmap-content {
+            width: 45%; background: rgba(255,255,255,0.03); padding: 20px; border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.05); backdrop-filter: blur(5px);
+        }
+        .roadmap-item:nth-child(even) { flex-direction: row-reverse; }
+        .roadmap-date { color: var(--accent); font-weight: 700; font-size: 0.9rem; margin-bottom: 5px; }
+        .roadmap-title { color: #fff; font-weight: 700; margin-bottom: 5px; }
+        .roadmap-desc { color: var(--text-muted); font-size: 0.9rem; }
+
+        /* --- FEATURES --- */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; max-width: 1200px; margin: 0 auto; }
         .feature-card {
             background: linear-gradient(160deg, rgba(30,30,40,0.8) 0%, rgba(15,15,20,0.9) 100%);
             backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.05);
             padding: 40px; border-radius: 24px; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative; overflow: hidden; group;
         }
-        .feature-card:hover {
-            transform: translateY(-10px); border-color: var(--accent);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.6), inset 0 0 0 1px rgba(241, 196, 15, 0.2);
-        }
-        .feature-card i {
-            font-size: 2.5rem; color: var(--accent); margin-bottom: 25px;
-            filter: drop-shadow(0 0 10px var(--accent-glow));
-        }
+        .feature-card:hover { transform: translateY(-10px); border-color: var(--accent); box-shadow: 0 20px 40px rgba(0,0,0,0.6), inset 0 0 0 1px rgba(241, 196, 15, 0.2); }
+        .feature-card i { font-size: 2.5rem; color: var(--accent); margin-bottom: 25px; filter: drop-shadow(0 0 10px var(--accent-glow)); }
         .feature-card h3 { font-family: 'Exo 2', sans-serif; font-size: 1.4rem; margin-bottom: 15px; font-weight: 700; }
         .feature-card p { color: var(--text-muted); font-size: 0.95rem; }
 
-        /* --- SPECS TABLE (TECH STYLE) --- */
-        .specs-wrapper {
-            max-width: 900px; margin: 0 auto; background: rgba(20, 20, 30, 0.6);
-            border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; overflow: hidden;
-            backdrop-filter: blur(10px);
-        }
-        .spec-row {
-            display: flex; padding: 25px; border-bottom: 1px solid rgba(255,255,255,0.05);
-            align-items: center; transition: background 0.3s;
-        }
-        .spec-row:last-child { border-bottom: none; }
+        /* --- SPECS --- */
+        .specs-wrapper { max-width: 900px; margin: 0 auto; background: rgba(20, 20, 30, 0.6); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; overflow: hidden; backdrop-filter: blur(10px); }
+        .spec-row { display: flex; padding: 25px; border-bottom: 1px solid rgba(255,255,255,0.05); align-items: center; transition: background 0.3s; }
         .spec-row:hover { background: rgba(255,255,255,0.03); }
-        .spec-icon { 
-            width: 50px; height: 50px; background: rgba(255,255,255,0.05); border-radius: 12px; 
-            display: flex; align-items: center; justify-content: center; color: var(--accent); font-size: 1.2rem;
-            margin-right: 20px;
-        }
+        .spec-icon { width: 50px; height: 50px; background: rgba(255,255,255,0.05); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--accent); font-size: 1.2rem; margin-right: 20px; }
         .spec-label { flex: 1; font-weight: 600; text-transform: uppercase; color: var(--text-muted); letter-spacing: 1px; font-size: 0.9rem; }
         .spec-value { flex: 2; font-weight: 700; color: #fff; font-size: 1.1rem; }
 
-        /* --- DOWNLOAD CARD (THE ENGINE) --- */
+        /* --- DOWNLOAD --- */
         .download-card {
             max-width: 800px; margin: 0 auto; background: linear-gradient(145deg, #1a1c26, #0d0e12);
             border: 1px solid rgba(255,255,255,0.1); border-radius: 30px; padding: 60px; text-align: center;
             position: relative; overflow: hidden; box-shadow: 0 0 80px rgba(0,0,0,0.8);
         }
-        .download-card::before {
-            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 5px;
-            background: var(--gradient); box-shadow: 0 0 20px var(--accent);
-        }
-        .version-tag {
-            display: inline-block; background: rgba(241, 196, 15, 0.1); color: var(--accent);
-            padding: 5px 15px; border-radius: 20px; font-weight: 700; font-size: 0.9rem;
-            border: 1px solid rgba(241, 196, 15, 0.3); margin-bottom: 20px;
-        }
-        .meta-info {
-            display: flex; justify-content: center; gap: 40px; margin: 40px 0; color: var(--text-muted);
-        }
+        .download-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 5px; background: var(--gradient); box-shadow: 0 0 20px var(--accent); }
+        .version-tag { display: inline-block; background: rgba(241, 196, 15, 0.1); color: var(--accent); padding: 5px 15px; border-radius: 20px; font-weight: 700; font-size: 0.9rem; border: 1px solid rgba(241, 196, 15, 0.3); margin-bottom: 20px; }
+        .meta-info { display: flex; justify-content: center; gap: 40px; margin: 40px 0; color: var(--text-muted); }
         .meta-info div { display: flex; flex-direction: column; align-items: center; gap: 5px; }
         .meta-info i { font-size: 1.5rem; color: #fff; margin-bottom: 5px; }
-        .meta-info span { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; }
         .meta-value { color: var(--accent); font-weight: 800; font-size: 1.2rem; }
 
-        /* --- FAQ ACCORDION (MODERN) --- */
+        /* --- FAQ --- */
         .faq-wrapper { max-width: 800px; margin: 0 auto; }
         .faq-item { margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.08); border-radius: 15px; background: rgba(255,255,255,0.02); overflow: hidden; transition: all 0.3s; }
         .faq-item.active { border-color: var(--accent); background: rgba(241, 196, 15, 0.05); }
-        .faq-question {
-            padding: 25px; cursor: pointer; display: flex; justify-content: space-between; align-items: center;
-            font-weight: 700; font-size: 1.1rem;
-        }
+        .faq-question { padding: 25px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: 700; font-size: 1.1rem; }
         .faq-answer { padding: 0 25px; max-height: 0; overflow: hidden; transition: all 0.3s ease-out; color: var(--text-muted); }
         .faq-item.active .faq-answer { padding-bottom: 25px; max-height: 200px; }
-        .faq-icon { transition: transform 0.3s; }
         .faq-item.active .faq-icon { transform: rotate(180deg); color: var(--accent); }
 
-        /* --- FOOTER --- */
-        footer {
-            text-align: center; padding: 60px 20px; border-top: 1px solid rgba(255,255,255,0.05);
-            background: #0a0b10; color: var(--text-muted); font-size: 0.9rem;
-        }
+        footer { text-align: center; padding: 60px 20px; border-top: 1px solid rgba(255,255,255,0.05); background: #0a0b10; color: var(--text-muted); font-size: 0.9rem; }
         .footer-logo { font-family: 'Exo 2', sans-serif; font-weight: 900; font-size: 1.5rem; color: #fff; margin-bottom: 20px; display: inline-block; }
         .footer-logo span { color: var(--accent); }
 
-        /* RESPONSIVE */
         @media (max-width: 768px) {
             nav { width: 95%; padding: 15px 20px; }
-            .nav-links { display: none; } /* Mobil menü egyszerűsítve */
+            .nav-links { display: none; }
             .hero h1 { font-size: 2.5rem; }
             .hero-showcase { flex-direction: column; gap: 30px; }
             .screenshot-wrapper { width: 100%; }
             .spec-row { flex-direction: column; align-items: flex-start; gap: 10px; }
-            .spec-icon { margin-bottom: 10px; }
             .meta-info { gap: 20px; }
+            .plate-image { max-width: 300px; }
+            .roadmap-container::before { left: 20px; }
+            .roadmap-item, .roadmap-item:nth-child(even) { flex-direction: column; padding-left: 50px; align-items: flex-start; }
+            .roadmap-dot { left: 20px; }
+            .roadmap-content { width: 100%; }
         }
     </style>
 </head>
 <body>
 
+    <div id="preloader">
+        <div class="spinner"></div>
+    </div>
+
+    <div id="progress-bar"></div>
+
     <div id="particles-js"></div>
+    <div class="rellax parallax-icon" data-rellax-speed="-4" style="top: 20%; left: 10%; opacity: 0.05;"><i class="fas fa-cog"></i></div>
+    <div class="rellax parallax-icon" data-rellax-speed="5" style="top: 50%; right: 5%; opacity: 0.05;"><i class="fas fa-wrench"></i></div>
+    <div class="rellax parallax-icon" data-rellax-speed="-2" style="top: 80%; left: 15%; opacity: 0.05;"><i class="fas fa-tachometer-alt"></i></div>
 
     <nav>
         <div class="logo"><i class="fas fa-tachometer-alt"></i> DriveSync</div>
         <ul class="nav-links">
             <li><a href="#features">Funkciók</a></li>
+            <li><a href="#roadmap">Tervek</a></li>
             <li><a href="#specs">Specifikáció</a></li>
             <li><a href="#faq">Infó</a></li>
             <li><a href="https://github.com/MorvaiRoland/drivesync-website/issues" target="_blank" class="bug-btn"><i class="fas fa-bug"></i> Hibajelentés</a></li>
@@ -281,8 +291,11 @@
     </nav>
 
     <section class="hero">
-        <div data-aos="fade-up">
-            <h1>Kezeld autódat <br><span class="typed-text" id="typed"></span></h1>
+        <div data-aos="zoom-in">
+            <p style="margin-bottom: 20px; font-weight: 600; letter-spacing: 2px; color: var(--accent); text-transform: uppercase;">A digitális garázsod</p>
+            
+            <h1>Kezeld autódat <br> <div class="glitch-wrapper"><span class="glitch" data-text="DRIVESYNC">DRIVESYNC</span></div> <br> erejével</h1>
+            
             <p>A végső megoldás a szerviznapló vezetésére, költségvetés követésre és a teljes autóparkod menedzselésére.</p>
             
             <div class="hero-buttons">
@@ -337,6 +350,57 @@
                 <i class="fas fa-shield-alt"></i>
                 <h3>Dark Mode UI</h3>
                 <p>Szemkímélő, modern sötét téma, ami nem csak jól néz ki, de profi felhasználói élményt is nyújt éjszaka is.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="tech">
+        <div class="section-header" data-aos="fade-up">
+            <h2>A Motorháztető <span>Alatt</span></h2>
+            <p>Modern és megbízható technológiák hajtják a rendszert a maximális teljesítményért.</p>
+        </div>
+        <div class="tech-grid">
+            <div class="tech-card" data-aos="zoom-in" data-aos-delay="100">
+                <i class="devicon-java-plain tech-icon"></i>
+                <div class="tech-name">Java 24</div>
+            </div>
+            <div class="tech-card" data-aos="zoom-in" data-aos-delay="200">
+                <i class="devicon-mysql-plain tech-icon"></i>
+                <div class="tech-name">MySQL</div>
+            </div>
+            <div class="tech-card" data-aos="zoom-in" data-aos-delay="300">
+                <i class="fas fa-layer-group tech-icon"></i>
+                <div class="tech-name">JavaFX</div>
+            </div>
+            <div class="tech-card" data-aos="zoom-in" data-aos-delay="400">
+                <i class="devicon-css3-plain tech-icon"></i>
+                <div class="tech-name">Modern CSS</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="roadmap">
+        <div class="section-header" data-aos="fade-up">
+            <h2>Jövőbeli <span>Tervek</span></h2>
+            <p>Folyamatosan fejlesztjük a programot. Íme, mi várható a közeljövőben.</p>
+        </div>
+        <div class="roadmap-container">
+            <div class="roadmap-item" data-aos="fade-right">
+                <div class="roadmap-dot"></div>
+                <div class="roadmap-content">
+                    <div class="roadmap-date">JELENLEG</div>
+                    <div class="roadmap-title">Verzió 1.0 Kiadása</div>
+                    <div class="roadmap-desc">Stabil alaprendszer, felhő szinkronizáció, statisztikák és költségkövetés.</div>
+                </div>
+            </div>
+           
+            <div class="roadmap-item" data-aos="fade-left">
+                <div class="roadmap-dot"></div>
+                <div class="roadmap-content">
+                    <div class="roadmap-date">HAMAROSAN</div>
+                    <div class="roadmap-title">Mobil Nézet</div>
+                    <div class="roadmap-desc">A program reszponzívabbá tétele kisebb képernyőkre is.</div>
+                </div>
             </div>
         </div>
     </section>
@@ -431,18 +495,30 @@
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.0/vanilla-tilt.min.js"></script>
-    <script src="https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rellax/1.12.1/rellax.min.js"></script>
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 
     <script>
+        // PRELOADER
+        window.onload = function() {
+            const preloader = document.getElementById('preloader');
+            preloader.style.opacity = '0';
+            setTimeout(() => { preloader.style.display = 'none'; }, 500);
+        }
+
+        // SCROLL PROGRESS
+        window.onscroll = function() {
+            let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            let scrolled = (winScroll / height) * 100;
+            document.getElementById("progress-bar").style.width = scrolled + "%";
+        };
+
         // Init AOS
         AOS.init({ once: true, offset: 100, duration: 800 });
 
-        // Typewriter
-        var typed = new Typed('#typed', {
-            strings: ['Okosan.', 'Gyorsan.', 'Prémium módon.'],
-            typeSpeed: 50, backSpeed: 30, backDelay: 2000, loop: true
-        });
+        // Init Rellax (Parallax)
+        var rellax = new Rellax('.rellax');
 
         // Particles - Modern Tech Style
         particlesJS("particles-js", {
@@ -467,7 +543,6 @@
         const faqItems = document.querySelectorAll('.faq-item');
         faqItems.forEach(item => {
             item.addEventListener('click', () => {
-                // Bezárjuk a többit (opcionális, de elegánsabb)
                 faqItems.forEach(other => {
                     if (other !== item) other.classList.remove('active');
                 });
@@ -480,7 +555,6 @@
         .then(response => response.json())
         .then(data => {
             document.getElementById('versionBadge').innerText = data.tag_name + " Verzió";
-            
             const asset = data.assets.find(a => a.name.endsWith('.zip'));
             if (asset) {
                 const sizeMB = (asset.size / (1024 * 1024)).toFixed(1);
@@ -490,7 +564,7 @@
         })
         .catch(err => {
             console.log('GitHub API Error', err);
-            document.getElementById('versionBadge').innerText = "v1.0 (Offline)";
+            document.getElementById('versionBadge').innerText = "v1.0";
         });
     </script>
 </body>
