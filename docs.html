@@ -9,74 +9,211 @@
     <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;500;700;900&family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
 
     <style>
-        :root { --accent: #f1c40f; --dark-bg: #0f1016; --text: #fff; --sidebar-width: 280px; }
+        :root { --accent: #f1c40f; --dark-bg: #0f1016; --text: #e0e0e0; --sidebar-width: 300px; }
         
+        * { box-sizing: border-box; scroll-behavior: smooth; }
         body { font-family: 'Montserrat', sans-serif; background: var(--dark-bg); color: var(--text); margin: 0; display: flex; }
         
         /* Oldalsáv */
         .sidebar {
-            width: var(--sidebar-width); height: 100vh; background: rgba(20,20,30,0.5);
-            border-right: 1px solid rgba(255,255,255,0.1); position: fixed; padding: 30px;
-            overflow-y: auto;
+            width: var(--sidebar-width); height: 100vh; background: rgba(20,20,30,0.95);
+            border-right: 1px solid rgba(255,255,255,0.05); position: fixed; padding: 30px;
+            overflow-y: auto; z-index: 100;
         }
-        .docs-logo { font-family: 'Exo 2'; font-size: 1.5rem; font-weight: 900; margin-bottom: 40px; display: block; color: #fff; text-decoration: none; }
+        .docs-logo { 
+            font-family: 'Exo 2'; font-size: 1.8rem; font-weight: 900; margin-bottom: 40px; 
+            display: block; color: #fff; text-decoration: none; letter-spacing: 1px;
+        }
         .docs-logo span { color: var(--accent); }
         
-        .menu-item { display: block; color: #aaa; text-decoration: none; padding: 10px 0; transition: 0.3s; font-size: 0.95rem; }
-        .menu-item:hover, .menu-item.active { color: var(--accent); padding-left: 10px; }
-        .menu-title { color: #fff; font-weight: 700; margin: 25px 0 10px; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; opacity: 0.6; }
+        .menu-group { margin-bottom: 25px; }
+        .menu-title { 
+            color: var(--accent); font-weight: 800; margin-bottom: 10px; 
+            text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1.5px; 
+        }
+        .menu-item { 
+            display: block; color: #888; text-decoration: none; padding: 8px 0; 
+            transition: 0.2s; font-size: 0.95rem; border-left: 2px solid transparent; padding-left: 10px;
+        }
+        .menu-item:hover, .menu-item.active { color: #fff; border-left-color: var(--accent); padding-left: 15px; }
 
         /* Tartalom */
-        .content { margin-left: var(--sidebar-width); padding: 60px 80px; max-width: 1000px; width: 100%; }
-        h1 { font-family: 'Exo 2'; font-size: 3rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 20px; }
-        h2 { color: var(--accent); margin-top: 40px; }
-        p { color: #ccc; line-height: 1.8; }
+        .content { margin-left: var(--sidebar-width); padding: 60px 100px; max-width: 1200px; width: 100%; }
+        
+        h1 { font-family: 'Exo 2'; font-size: 3.5rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 20px; margin-top: 0; }
+        h2 { color: #fff; margin-top: 60px; font-family: 'Exo 2'; font-size: 2rem; position: relative; }
+        h2::before { content: '#'; color: var(--accent); margin-right: 10px; opacity: 0.5; }
+        h3 { color: #ccc; margin-top: 30px; font-size: 1.4rem; }
+        
+        p { line-height: 1.8; font-size: 1.05rem; color: #bbb; }
+        ul { line-height: 1.8; color: #bbb; }
+        li { margin-bottom: 10px; }
         
         /* Kód doboz */
         .code-block {
-            background: #000; padding: 20px; border-radius: 10px; font-family: monospace;
-            border: 1px solid rgba(255,255,255,0.1); color: #2ecc71; margin: 20px 0;
+            background: #0a0b10; padding: 20px; border-radius: 10px; font-family: 'Consolas', monospace;
+            border: 1px solid rgba(255,255,255,0.1); color: #a6accd; margin: 20px 0; position: relative;
         }
-        .note { background: rgba(241, 196, 15, 0.1); border-left: 4px solid var(--accent); padding: 20px; margin: 20px 0; border-radius: 5px; }
+        .copy-btn {
+            position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.1); border: none;
+            color: #fff; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 0.8rem;
+        }
+        .copy-btn:hover { background: var(--accent); color: #000; }
+
+        /* Alert dobozok */
+        .alert { padding: 20px; border-radius: 8px; margin: 25px 0; border-left: 4px solid; }
+        .alert-info { background: rgba(241, 196, 15, 0.1); border-color: var(--accent); }
+        .alert-warn { background: rgba(231, 76, 60, 0.1); border-color: #e74c3c; }
+        
+        /* Reszponzív */
+        @media (max-width: 1024px) {
+            .sidebar { transform: translateX(-100%); transition: 0.3s; }
+            .sidebar.open { transform: translateX(0); }
+            .content { margin-left: 0; padding: 40px 20px; }
+            .toggle-btn { display: block; position: fixed; top: 20px; right: 20px; z-index: 200; background: var(--accent); border: none; padding: 10px; border-radius: 5px; cursor: pointer; }
+        }
     </style>
 </head>
 <body>
 
+    <button class="toggle-btn" onclick="document.querySelector('.sidebar').classList.toggle('open')" style="display:none;">
+        <i class="fas fa-bars"></i>
+    </button>
+
     <div class="sidebar">
         <a href="index.html" class="docs-logo">Drive<span>Sync</span> Docs</a>
         
-        <div class="menu-title">Kezdetek</div>
-        <a href="#install" class="menu-item active">Telepítés</a>
-        <a href="#login" class="menu-item">Bejelentkezés</a>
+        <div class="menu-group">
+            <div class="menu-title">Bevezetés</div>
+            <a href="#telepites" class="menu-item">Telepítés</a>
+            <a href="#kovetelmenyek" class="menu-item">Rendszerkövetelmények</a>
+        </div>
         
-        <div class="menu-title">Használat</div>
-        <a href="#cars" class="menu-item">Autók hozzáadása</a>
-        <a href="#costs" class="menu-item">Költségek</a>
+        <div class="menu-group">
+            <div class="menu-title">Felhasználói Fiók</div>
+            <a href="#regisztracio" class="menu-item">Regisztráció</a>
+            <a href="#google-login" class="menu-item">Google Bejelentkezés</a>
+        </div>
+
+        <div class="menu-group">
+            <div class="menu-title">Modulok</div>
+            <a href="#dashboard" class="menu-item">Vezérlőpult</a>
+            <a href="#autok" class="menu-item">Saját Autók</a>
+            <a href="#koltsegvetes" class="menu-item">Költségvetés</a>
+            <a href="#ai-diagnosztika" class="menu-item">AI Diagnosztika</a>
+        </div>
         
-        <div class="menu-title">Hibaelhárítás</div>
-        <a href="#faq" class="menu-item">Gyakori hibák</a>
-        <a href="index.html" class="menu-item" style="margin-top: 30px; color: var(--accent);"><i class="fas fa-arrow-left"></i> Vissza a Főoldalra</a>
+        <div class="menu-group">
+            <div class="menu-title">Egyéb</div>
+            <a href="#faq" class="menu-item">Gyakori Hibák (FAQ)</a>
+            <a href="index.html" class="menu-item" style="color: var(--accent); margin-top: 20px;"><i class="fas fa-arrow-left"></i> Vissza a Főoldalra</a>
+        </div>
     </div>
 
     <div class="content">
-        <h1 id="install">Telepítési Útmutató</h1>
-        <p>Üdvözöl a DriveSync hivatalos dokumentációjában. Itt minden információt megtalálsz a szoftver használatáról.</p>
+        <h1 id="telepites">Kezdő lépések</h1>
+        <p>Üdvözöljük a DriveSync hivatalos dokumentációjában. Ez az útmutató segít a szoftver telepítésében, konfigurálásában és a funkciók maximális kihasználásában.</p>
         
-        <div class="note">
-            <strong>Tipp:</strong> A program futtatásához nem szükséges előre telepített Java, mivel a DriveSync tartalmazza a saját futtatókörnyezetét.
+        <div class="alert alert-info">
+            <strong>Tudtad?</strong> A DriveSync "Portable" (hordozható) szoftver, így nem hagy szemetet a Windows rendszerleíró adatbázisában (Registry), és pendrive-ról is futtatható.
         </div>
 
-        <h2>1. Letöltés és Kicsomagolás</h2>
-        <p>Töltsd le a legfrissebb <code>DriveSync.zip</code> fájlt a főoldalról. A Windows beépített csomagolójával vagy WinRAR-ral csomagold ki egy tetszőleges mappába.</p>
+        <h2>Telepítés és Indítás</h2>
+        <ol>
+            <li>Töltsd le a legfrissebb verziót a <a href="index.html" style="color: var(--accent);">Főoldalról</a>.</li>
+            <li>Csomagold ki a letöltött <code>DriveSync.zip</code> fájlt egy tetszőleges mappába.</li>
+            <li>Nyisd meg a mappát, és keresd meg a futtatható fájlt:</li>
+        </ol>
+        
+        <div class="code-block">
+            DriveSync.exe
+            <button class="copy-btn" onclick="navigator.clipboard.writeText('DriveSync.exe')">Másolás</button>
+        </div>
 
-        <h2>2. Indítás</h2>
-        <p>Keresd meg a mappában a futtatható fájlt:</p>
-        <div class="code-block">DriveSync.exe</div>
-        <p>Kattints rá duplán. Az első indításnál a Windows SmartScreen rákérdezhet a futtatásra, válaszd a "További információ" -> "Futtatás mindenképp" opciót.</p>
+        <p>Az első indításkor a Windows SmartScreen figyelmeztethet. Mivel nem rendelkezünk évi több ezer dolláros Microsoft tanúsítvánnyal (még), kattints a <strong>"További információ"</strong>, majd a <strong>"Futtatás mindenképp"</strong> gombra.</p>
 
-        <h2 id="login">Bejelentkezés</h2>
-        <p>Használhatsz hagyományos email/jelszó párost, vagy a kényelmesebb <strong>Google Login</strong> gombot. Utóbbi esetben az adataid automatikusan szinkronizálódnak a felhőfiókoddal.</p>
+        <h2 id="kovetelmenyek">Rendszerkövetelmények</h2>
+        <ul>
+            <li><strong>OS:</strong> Windows 10 (1809+) vagy Windows 11 (64-bit)</li>
+            <li><strong>RAM:</strong> Minimum 4 GB</li>
+            <li><strong>Tárhely:</strong> 300 MB szabad hely</li>
+            <li><strong>Internet:</strong> Szükséges a felhő szinkronizációhoz</li>
+        </ul>
+
+        <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 50px 0;">
+
+        <h1 id="regisztracio">Fiók és Biztonság</h1>
+        <p>A DriveSync hibrid felhő technológiát használ. Ez azt jelenti, hogy az alkalmazás a gépeden fut, de az adatokat egy biztonságos, központi MySQL szerveren tároljuk.</p>
+
+        <h3 id="google-login">Google Bejelentkezés (Ajánlott)</h3>
+        <p>A leggyorsabb és legbiztonságosabb módszer. A program a Google OAuth2 protokollját használja, így mi sosem látjuk a jelszavadat, csak egy hitelesítési tokent kapunk.</p>
+
+        <h3>Hagyományos Regisztráció</h3>
+        <p>Ha nem szeretnéd összekötni a Google fiókoddal, regisztrálhatsz email címmel is. A jelszavadat <strong>SHA-256</strong> titkosítással tároljuk, ami feltörhetetlen.</p>
+
+        <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 50px 0;">
+
+        <h1 id="modulok">Modulok Használata</h1>
+        
+        <h2 id="dashboard">Vezérlőpult (Dashboard)</h2>
+        <p>Ez a központi képernyő, ahol azonnal látod a legfontosabb információkat:</p>
+        <ul>
+            <li>Aktuális üzemanyagárak (Online frissítve).</li>
+            <li>Helyi időjárás (hogy tudd, kell-e esernyő a kocsiba).</li>
+            <li>Következő esedékes szerviz időpontja.</li>
+        </ul>
+
+        <h2 id="autok">Saját Autók</h2>
+        <p>Itt adhatod hozzá a flottád járműveit. Tölts fel fotót, add meg a rendszámot, alvázszámot és a műszaki vizsga érvényességét. A rendszer automatikusan számolja a hátralévő napokat.</p>
+
+        <h2 id="koltsegvetes">Költségvetés</h2>
+        <p>A legnépszerűbb funkció. Kétféle kiadást rögzíthetsz:</p>
+        <ol>
+            <li><strong>Tankolás:</strong> Liter, Ár, Kilométeróra állás.</li>
+            <li><strong>Szerviz/Egyéb:</strong> Alkatrész, biztosítás, mosás.</li>
+        </ol>
+        <p>A jobb oldali panelen interaktív kördiagram mutatja, mire költöttél a legtöbbet az adott hónapban.</p>
+
+        <h2 id="ai-diagnosztika">AI Diagnosztika</h2>
+        <p>Nem vagy autószerelő? Semmi gond. Írd le a hibajelenséget a saját szavaiddal (pl. <i>"Kattogó hang kanyarodáskor"</i>), és a beépített AI elemzi a tüneteket, majd kilistázza a legvalószínűbb hibaokokat (pl. Féltengelycsukló).</p>
+
+        <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 50px 0;">
+
+        <h1 id="faq">Gyakori Hibák (FAQ)</h1>
+        
+        <div class="alert alert-warn">
+            <strong>Hiba:</strong> "A rendszer nem találja a Java környezetet."<br>
+            <strong>Megoldás:</strong> Valószínűleg nem a <code>DriveSync.exe</code>-t indítottad, hanem a JAR fájlt. Mindig az EXE-t használd!
+        </div>
+
+        <h3>Nem tudok bejelentkezni a Google fiókkal</h3>
+        <p>Ellenőrizd az internetkapcsolatodat és a tűzfal beállításait. A programnak engedélyezni kell a kimenő kapcsolatot a 443-as porton (HTTPS).</p>
+
+        <h3>Hogyan törölhetem a fiókomat?</h3>
+        <p>Az adatvédelmi irányelveknek (GDPR) megfelelően bármikor kérheted a törlést. Írj a fejlesztőnek a "Hibabejelentés" menüponton keresztül, vagy a GitHub Issues oldalon.</p>
+
+        <div style="height: 100px;"></div>
     </div>
+
+    <script>
+        // Scrollspy (Menü aktív állapot)
+        window.addEventListener('scroll', () => {
+            let current = '';
+            document.querySelectorAll('h1, h2').forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (scrollY >= sectionTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            document.querySelectorAll('.menu-item').forEach(li => {
+                li.classList.remove('active');
+                if (li.getAttribute('href').includes(current)) {
+                    li.classList.add('active');
+                }
+            });
+        });
+    </script>
 
 </body>
 </html>
