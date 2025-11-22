@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DriveSync - Jogi Nyilatkozat</title>
+    <link rel="icon" type="image/png" href="logo.png">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;500;700;900&family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --accent: #f1c40f;
+            --dark-bg: #0f1016;
+            --text: #ffffff;
+            --text-muted: #aab2bd;
+            --card-bg: rgba(255,255,255,0.03);
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text);
+            line-height: 1.8;
+            margin: 0; padding: 0;
+            background-image: radial-gradient(#1a1c29 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+
+        /* Fejléc */
+        header {
+            padding: 30px 50px; display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1); background: rgba(15, 16, 22, 0.95);
+            position: sticky; top: 0; z-index: 100; backdrop-filter: blur(10px);
+        }
+        .logo { font-family: 'Exo 2'; font-weight: 900; font-size: 1.5rem; text-transform: uppercase; }
+        .logo span { color: var(--accent); }
+        .back-btn { color: var(--text); text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 8px; transition: 0.3s; }
+        .back-btn:hover { color: var(--accent); }
+
+        /* Tartalom */
+        .container { max-width: 900px; margin: 60px auto; padding: 0 20px; min-height: 80vh; }
+        
+        h1 { font-family: 'Exo 2'; font-size: 3rem; margin-bottom: 10px; }
+        p { color: var(--text-muted); margin-bottom: 20px; }
+
+        /* TABOK (Váltógombok) */
+        .tabs { display: flex; gap: 20px; margin-bottom: 40px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .tab-btn {
+            background: none; border: none; color: var(--text-muted); font-family: 'Exo 2';
+            font-size: 1.2rem; font-weight: 700; padding: 15px 0; cursor: pointer;
+            position: relative; transition: 0.3s;
+        }
+        .tab-btn:hover { color: #fff; }
+        .tab-btn.active { color: var(--accent); }
+        .tab-btn.active::after {
+            content: ''; position: absolute; bottom: -1px; left: 0; width: 100%; height: 3px;
+            background: var(--accent); box-shadow: 0 0 10px var(--accent);
+        }
+
+        /* Szöveg doboz */
+        .content-box {
+            background: var(--card-bg); border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 20px; padding: 40px; display: none; animation: fadeIn 0.5s;
+        }
+        .content-box.active { display: block; }
+        
+        h2 { color: #fff; margin-top: 30px; font-family: 'Exo 2'; }
+        ul { color: var(--text-muted); margin-bottom: 20px; padding-left: 20px; }
+        li { margin-bottom: 10px; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        footer { text-align: center; padding: 40px; color: var(--text-muted); font-size: 0.9rem; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 80px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">Drive<span>Sync</span> Legal</div>
+        <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Vissza a Főoldalra</a>
+    </header>
+
+    <div class="container">
+        <h1>Jogi Információk</h1>
+        <p>Mert a rendszámunk tiszta, és az adatkezelésünk is.</p>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="openTab('privacy')">Adatvédelem</button>
+            <button class="tab-btn" onclick="openTab('terms')">Felhasználási Feltételek</button>
+        </div>
+
+        <div id="privacy" class="content-box active">
+            <h2>1. Milyen adatokat gyűjtünk?</h2>
+            <p>A DriveSync használata során a következő adatokat tároljuk a központi adatbázisban:</p>
+            <ul>
+                <li>Felhasználónév és titkosított jelszó (SHA-256).</li>
+                <li>E-mail cím (kapcsolattartáshoz és Google Loginhoz).</li>
+                <li>Gépjármű adatok (rendszám, típus, alvázszám - opcionális).</li>
+                <li>Rögzített költségek és szervizbejegyzések.</li>
+            </ul>
+
+            <h2>2. Hogyan védjük az adataidat?</h2>
+            <p>Az adatbázisunk jelszóval védett, külső támadások ellen tűzfallal biztosított szerveren fut. A jelszavadat mi sem látjuk, mivel egyirányú titkosítással (Hash) tároljuk.</p>
+
+            <h2>3. Harmadik felek</h2>
+            <p>Adataidat nem adjuk ki reklámcégeknek. A Google bejelentkezés során a Google API-t használjuk hitelesítésre.</p>
+        </div>
+
+        <div id="terms" class="content-box">
+            <h2>1. A Szolgáltatás Használata</h2>
+            <p>A DriveSync egy ingyenes ("Freeware"), nyílt forráskódú szoftver. Használata saját felelősségre történik. A fejlesztő nem vállal felelősséget az esetleges adatvesztésért vagy szoftverhibákból eredő károkért.</p>
+
+            <h2>2. Licenc</h2>
+            <p>A program az <strong>MIT License</strong> alatt áll. Ez azt jelenti, hogy szabadon másolhatod, módosíthatod és terjesztheted, amennyiben feltünteted az eredeti szerzőt (Morvai Roland).</p>
+
+            <h2>3. Visszaélés</h2>
+            <p>Tilos a szoftver használata illegális tevékenységekre, vagy a felhő adatbázis szándékos túlterhelése (DDoS).</p>
+        </div>
+
+    </div>
+
+    <footer>
+        &copy; 2025 DriveSync Project. Minden jog fenntartva.
+    </footer>
+
+    <script>
+        function openTab(tabName) {
+            // Összes tartalom elrejtése
+            document.querySelectorAll('.content-box').forEach(box => box.classList.remove('active'));
+            // Összes gomb inaktívvá tétele
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            
+            // Kiválasztott megjelenítése
+            document.getElementById(tabName).classList.add('active');
+            // Aktív gomb jelölése (trükkös: az eseményt kiváltó gombot keressük)
+            event.currentTarget.classList.add('active');
+        }
+    </script>
+
+</body>
+</html>
