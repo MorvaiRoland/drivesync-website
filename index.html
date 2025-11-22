@@ -178,7 +178,7 @@
     .marquee-item { font-size: 1rem; margin: 0 20px; }
 }
 
-        /* --- NAVIGÁCIÓ --- */
+       /* --- NAVIGÁCIÓ KONTÉNER --- */
         nav {
             display: flex; justify-content: space-between; align-items: center;
             width: 90%; max-width: 1200px; margin: 20px auto; padding: 15px 30px;
@@ -187,25 +187,77 @@
             position: sticky; top: 20px; z-index: 1000;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5); transition: all 0.3s ease;
         }
-        .logo { font-family: 'Exo 2', sans-serif; font-size: 1.5rem; font-weight: 900; color: #fff; display: flex; align-items: center; gap: 10px; letter-spacing: 1px; text-transform: uppercase; }
+
+        /* LOGÓ */
+        .logo { 
+            font-family: 'Exo 2', sans-serif; font-size: 1.5rem; font-weight: 900; 
+            color: #fff; display: flex; align-items: center; gap: 10px; letter-spacing: 1px; text-transform: uppercase; 
+        }
         .logo i { color: var(--accent); text-shadow: 0 0 15px var(--accent-glow); transition: color 0.3s, text-shadow 0.3s; }
+
+        /* MENÜ LINKEK (FŐSOR) */
         .nav-links { display: flex; gap: 30px; align-items: center; }
-        .nav-links a { text-decoration: none; color: var(--text-muted); font-weight: 600; font-size: 0.9rem; transition: all 0.3s; position: relative; text-transform: uppercase; letter-spacing: 0.5px; }
+        
+        .nav-links a { 
+            text-decoration: none; color: var(--text-muted); font-weight: 600; font-size: 0.9rem; 
+            transition: all 0.3s; position: relative; text-transform: uppercase; letter-spacing: 0.5px; 
+        }
         .nav-links a:hover { color: #fff; }
-        .nav-links a::after {
+
+        /* Sárga aláhúzás animáció (CSAK a fősoron) */
+        .nav-links > li > a::after {
             content: ''; position: absolute; width: 0; height: 2px; bottom: -5px; left: 0;
             background: var(--accent); transition: width 0.3s; box-shadow: 0 0 10px var(--accent);
         }
-        .nav-links a:hover::after { width: 100%; }
+        .nav-links > li > a:hover::after { width: 100%; }
+
+        /* --- DROPDOWN (LEGÖRDÜLŐ) MENÜ --- */
+        .dropdown { position: relative; display: inline-block; }
+        
+        /* A gomb, amire ráviszed az egeret */
+        .dropbtn { 
+            color: var(--text-muted); font-weight: 600; font-size: 0.9rem; 
+            text-transform: uppercase; letter-spacing: 0.5px; cursor: pointer; transition: 0.3s;
+            display: flex; align-items: center; gap: 5px;
+        }
+        .dropbtn:hover { color: #fff; }
+
+        /* A legördülő doboz */
+        .dropdown-content {
+            display: none; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+            background-color: rgba(20, 20, 30, 0.95); min-width: 200px; /* Kicsit szélesebb */
+            box-shadow: 0 8px 16px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 15px; padding: 10px 0; z-index: 2000; backdrop-filter: blur(10px);
+        }
+
+        /* Linkek a legördülőben */
+        .dropdown-content a {
+            color: var(--text-muted); padding: 12px 20px; text-decoration: none;
+            display: block; text-align: left; font-size: 0.85rem; text-transform: none; /* Kisbetűs is lehet */
+        }
+
+        /* Hover a legördülőben (Háttérszín váltás, NINCS aláhúzás) */
+        .dropdown-content a:hover { background-color: rgba(255,255,255,0.05); color: var(--accent); }
+        .dropdown-content a::after { content: none !important; display: none !important; } /* Aláhúzás tiltása */
+        
+        .dropdown-content a i { width: 20px; text-align: center; margin-right: 10px; color: var(--accent); }
+
+        /* Megjelenítés */
+        .dropdown:hover .dropdown-content { display: block; animation: fadeIn 0.3s; }
+        @keyframes fadeIn { from { opacity: 0; transform: translate(-50%, 10px); } to { opacity: 1; transform: translate(-50%, 0); } }
+
+        /* --- GOMBOK --- */
         .bug-btn { color: #ff4757 !important; display: flex; align-items: center; gap: 5px; }
         .bug-btn:hover { text-shadow: 0 0 10px rgba(255, 71, 87, 0.5); }
+        
         .btn-download-nav {
-            background: var(--gradient); color: #000; padding: 10px 25px; border-radius: 30px;
+            background: var(--gradient); color: #000 !important; padding: 10px 25px; border-radius: 30px;
             font-weight: 800; text-transform: uppercase; letter-spacing: 1px; font-size: 0.85rem;
-            box-shadow: 0 5px 20px rgba(241, 196, 15, 0.3); transition: transform 0.3s, background 0.3s;
+            box-shadow: 0 5px 20px rgba(241, 196, 15, 0.3); transition: transform 0.3s, box-shadow 0.3s;
+            text-decoration: none;
         }
-        .btn-download-nav:hover { transform: scale(1.05); box-shadow: 0 5px 30px rgba(241, 196, 15, 0.5); color: #000; }
-
+        .btn-download-nav:hover { transform: scale(1.05); box-shadow: 0 5px 30px rgba(241, 196, 15, 0.5); color: #000 !important; }
+        .btn-download-nav::after { display: none; } /* Tiltjuk az aláhúzást a gombon is */
         /* --- HERO --- */
         .hero { text-align: center; padding: 100px 20px 60px; min-height: 80vh; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; }
         .hero h1 {
@@ -406,6 +458,8 @@
             .roadmap-content { width: 100%; }
             .newsletter-form { flex-direction: column; }
         }
+
+      
     </style>
 </head>
 <body>
@@ -424,16 +478,30 @@
     <div class="rellax parallax-icon" data-rellax-speed="5" style="top: 50%; right: 5%; opacity: 0.05;"><i class="fas fa-wrench"></i></div>
     <div class="rellax parallax-icon" data-rellax-speed="-2" style="top: 80%; left: 15%; opacity: 0.05;"><i class="fas fa-tachometer-alt"></i></div>
 
-    <nav>
+   <nav>
         <div class="logo"><i class="fas fa-tachometer-alt"></i> DriveSync</div>
         <ul class="nav-links">
             <li><a href="#features">Funkciók</a></li>
             <li><a href="#gallery">Galéria</a></li>
-            <li><a href="#tech">Tech</a></li>
-            <li><a href="#roadmap">Tervek</a></li>
-            <li><a href="#faq">Infó</a></li>
-            <li><a href="docs.html">Docs</a></li>
-            <li><a href="https://github.com/MorvaiRoland/drivesync-website/issues" target="_blank" class="bug-btn"><i class="fas fa-bug"></i> Hibajelentés</a></li>
+            
+            
+
+            <li><a href="https://github.com/MorvaiRoland/drivesync-website/issues" target="_blank" class="bug-btn" title="Hibabejelentés"><i class="fas fa-bug"></i>Hibabejelentés</a></li>
+            <li>
+    <a href="donate.html" style="color: var(--accent);" title="Támogatás">
+        <i class="fas fa-heart"></i> Támogatás
+    </a>
+</li>
+            <li class="dropdown">
+                <span class="dropbtn">Továbbiak <i class="fas fa-caret-down"></i></span>
+                <div class="dropdown-content">
+                    <a href="docs.html"><i class="fas fa-book"></i> Dokumentáció</a>
+                    <a href="#tech"><i class="fas fa-code"></i> Technológia</a>
+                    <a href="#roadmap"><i class="fas fa-map-signs"></i> Tervek</a>
+                    <a href="#faq"><i class="far fa-question-circle"></i> GyIK</a>
+                    <a href="#specs"><i class="fas fa-memory"></i> Gépigény</a>
+                </div>
+            </li>
         </ul>
         <a href="#download" class="btn-download-nav"><i class="fas fa-cloud-download-alt"></i> Letöltés</a>
     </nav>
